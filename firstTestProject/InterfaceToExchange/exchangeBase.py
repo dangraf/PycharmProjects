@@ -1,6 +1,8 @@
 import abc
 
-class exchangeBase():
+class exchangeBase(object):
+    __metaclass__ = abc.ABCMeta
+
     @abc.abstractmethod
     def buy(self, BtcPrice, Volume ):
         # puts creates a buy order
