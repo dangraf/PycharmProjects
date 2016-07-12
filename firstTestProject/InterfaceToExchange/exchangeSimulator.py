@@ -2,6 +2,7 @@ import exchangeBase as eb
 import pandas as pd
 import numpy as np
 import types
+import logging
 
 
 class exchangeSimulator(eb.exchangeBase):
@@ -26,11 +27,32 @@ class exchangeSimulator(eb.exchangeBase):
         self.CNTR_IDX = 0
         self.PRICE_IDX = 1
         self.VOLUME_IDX = 2
-        self.tradefee = 0
+        self.tradefee = 0.0
+        self.loggPath = 'exChangeSimLog.txt'
 
-        self.dataframe = pd.DataFrame(columns =['tick', 'price','btcBalance','cashBalance'])
+        #self.dataframe = pd.DataFrame(columns =['tick', 'price','btcBalance','cashBalance'])
+        #logging.basicConfig(filename=self._loggPath,
+        #                    level=logging.INFO,
+        #                    format='%(asctime)s %(levelname)s:%(message)s',
+        #                    datefmt='%Y/%m/%d/ %H:%M:%S')
+
+        logging.info('exchangeSimulator: initiated')
+
+
+    @property
+    def loggPath(self):
+        return self._loggPath
+
+    @loggPath.setter
+    def loggPath(self,value):
+        logging.basicConfig(filename=value,
+                            level=logging.INFO,
+                            format='%(asctime)s %(levelname)s:%(message)s',
+                            datefmt='%Y/%m/%d/ %H:%M:%S')
+        self._loggPath=  value
 
     def initialize(self, tradeFee):
+        logging.info('exchangeSimulator: tradeFee set to %d',tradeFee )
         self.tradefee = tradeFee
 
     # private function, calculates the total amount of presented in both BTC and Cash
@@ -42,6 +64,8 @@ class exchangeSimulator(eb.exchangeBase):
 
         for i in range(len(self.BuyBook)):
             self.CashAccess = self.CashAccess - self.BuyBook[i, self.PRICE_IDX] * self.BuyBook[i, self.VOLUME_IDX]
+
+        logging.info('exchangeSimulator: Assets updated to: %d', self.CashAccess)
 
     # def calcTresholdInBtc(self, volumeInPercent):
     #    assets = self.Cash / self.lastBtcPrice + self.Btc
@@ -65,12 +89,14 @@ class exchangeSimulator(eb.exchangeBase):
             #            print('Order, Selling {0}Btc at price {1}'.format(Volume,BtcPrice))
             self.BuyBook = np.vstack([self.BuyBook, [self.tickCounter, BtcPrice, Volume]])
             self.updateAccessValues()
+            logging.info('exchangeSimulator: BuyTicket: price %d volume %d' , BtcPrice,Volume)
 
     def sell(self, BtcPrice, Volume):
         if Volume < self.BtcAccess:
             #            print('Order, Selling {0}Btc at price {1}'.format(Volume,BtcPrice))
             self.SellBook = np.vstack([self.SellBook, [self.tickCounter, BtcPrice, Volume]])
             self.updateAccessValues()
+            logging.info('exchangeSimulator: SellTicket: price %d volume %d', BtcPrice, Volume)
 
     def tickEvent(self, price, volume):
         CNTR_IDX = 0
@@ -85,6 +111,7 @@ class exchangeSimulator(eb.exchangeBase):
                 self.Cash = self.Cash - cost - cost*self.tradefee
                 self.BuyBook = np.delete(self.BuyBook, i, axis=0)
                 self.updateAccessValues()
+                logging.info('exchangeSimulator: Buying at: price %d volume %d', price, volume)
 
             else:
                 i = i + 1
@@ -97,6 +124,7 @@ class exchangeSimulator(eb.exchangeBase):
                 self.Cash = self.Cash + cost - cost*self.tradefee
                 self.SellBook = np.delete(self.SellBook, i, axis=0)
                 self.updateAccessValues()
+                logging.info('exchangeSimulator: Selling at: price %d volume %d', price, volume)
 
             else:
                 i = i + 1
@@ -115,3 +143,6 @@ class exchangeSimulator(eb.exchangeBase):
     def getOrderDepth(self, depth):
         # returns orderdepth
         return
+
+a = exchangeSimulator(1.2,1.1)
+print 'hejhopop'
