@@ -28,7 +28,7 @@ class exchangeSimulator(eb.exchangeBase):
         self.VOLUME_IDX = 2
         self.tradefee = 0
 
-        self.dataframe = pd.DataFrame(columns =['tick', 'price', 'buyTime', 'sellTime'])
+        self.dataframe = pd.DataFrame(columns =['tick', 'price','btcBalance','cashBalance'])
 
     def initialize(self, tradeFee):
         self.tradefee = tradeFee
@@ -79,10 +79,10 @@ class exchangeSimulator(eb.exchangeBase):
         lastBtcPrice = price
         i = 0;
         while (i < len(self.BuyBook)):
-            if (price <= self.BuyBook[i][PRICE_IDX] and price * self.BuyBook[i][VOLUME_IDX] < self.Cash):
-                #                print('Buying {0}Btc at price {1}'.format(self.BuyBook[i][VOLUME_IDX],price))
+            if (price <= self.BuyBook[i][PRICE_IDX] and price * self.BuyBook[i][VOLUME_IDX] <= self.Cash):
                 self.Btc = self.Btc + self.BuyBook[i][VOLUME_IDX]
-                self.Cash = self.Cash - price * self.BuyBook[i][VOLUME_IDX]
+                cost = price * self.BuyBook[i][VOLUME_IDX]
+                self.Cash = self.Cash - cost - cost*self.tradefee
                 self.BuyBook = np.delete(self.BuyBook, i, axis=0)
                 self.updateAccessValues()
 
@@ -90,18 +90,19 @@ class exchangeSimulator(eb.exchangeBase):
                 i = i + 1
         i = 0
         while (i < len(self.SellBook)):
-            if (price >= self.SellBook[i][PRICE_IDX] and self.SellBook[i][VOLUME_IDX] < self.Btc):
+            if (price >= self.SellBook[i][PRICE_IDX] and self.SellBook[i][VOLUME_IDX] <= self.Btc):
                 #                print('Selling {0}Btc at price {1}'.format(self.SellBook[i][VOLUME_IDX],price))
                 self.Btc = self.Btc - self.SellBook[i][VOLUME_IDX]
-                self.Cash = self.Cash + price * self.SellBook[i][VOLUME_IDX]
+                cost = price * self.SellBook[i][VOLUME_IDX]
+                self.Cash = self.Cash + cost - cost*self.tradefee
                 self.SellBook = np.delete(self.SellBook, i, axis=0)
                 self.updateAccessValues()
 
             else:
                 i = i + 1
         self.tickCounter = self.tickCounter + 1
-        self.dataframe['tick'].append(self.tickCounter)
-        self.dataframe['price'].append(price)
+        index= self.dataframe.__len__()
+        self.dataframe.loc[index] = [self.tickCounter,price,self.Btc,self.Cash]
 
     def cancel(self, orderID):
         # canceles an order
