@@ -1,7 +1,7 @@
 from unittest import TestCase
 import stdOperations as std
 import numpy as np
-import pandas as pd
+#import pandas as pd
 
 
 __author__ = 'Daniel Grafstrom'
