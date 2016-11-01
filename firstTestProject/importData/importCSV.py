@@ -122,6 +122,9 @@ def getHistoryFilter( indexArray ):
         myFilter[index] = 1.0/len(indexArray)
 
     return myFilter
+
+# Calculates orderdepth rato
+# todo,handle price information together with volume information.x
 def getOrderDepthRatio( filename, topNumOrders ):
     """ testing To get some Infor from it """
     indexVolume = 1
@@ -161,6 +164,8 @@ def getOrderDepthRatio( filename, topNumOrders ):
 
     return ratioSeries
 
+# Reads csv Chart using price,  date and volume (no orderdepth)
+# groups volumes into 1sek data. Some dates may be missing when no trading occures.
 def readCsvChart(filenamePrice):
     tmpPrice = pd.read_csv(filenamePrice)
     tmpPrice.columns = ['date','price','volume']
@@ -169,6 +174,8 @@ def readCsvChart(filenamePrice):
 
 
     return price
+#private function,  used to fill create a complete array of price,  volume anad orderdepth
+# with 1sek data
 def fillAndSetData(dataframe,timestampStart=None,timestampEnd=None):
     #hitta start och slut index
     #skapa en index-lista for samtilga instanser
@@ -189,6 +196,7 @@ def fillAndSetData(dataframe,timestampStart=None,timestampEnd=None):
 
     return dataframe
 
+# takes two files with
 def syncPriceAndOrderdepth(timestampStart,timestampEnd,filenamePrice,filenameOrdDepth):
 
     priceData = readCsvChart( filenamePrice )
