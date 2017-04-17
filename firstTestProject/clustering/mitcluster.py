@@ -16,6 +16,7 @@ class mitCluster():
 
     def saveDistances(self,filename):
         pickle.dump(self.distances,open( filename, "wb" ))
+
     def loadDistances(self,filename):
         self.distances = pickle.load(open(filename,"rb"))
     """
