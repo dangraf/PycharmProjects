@@ -2,6 +2,14 @@ import pandas as pd
 import numpy as np
 import pickle
 
+""" takes two vectors that are normalized (length=1)"""
+def distAngle(a,b):
+    return np.dot(a.values, b.values)
+
+def euclidDist(a,b):
+    return (a-b)**2
+
+
 class mitCluster():
     def __init__(self):
         self.model = None
@@ -13,6 +21,7 @@ class mitCluster():
     def euclidDist(self,a,b):
         temp = (a.values - b.values) ** 2
         return np.sum(temp)
+
 
     def saveDistances(self,filename):
         pickle.dump(self.distances,open( filename, "wb" ))

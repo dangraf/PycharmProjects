@@ -5,7 +5,7 @@ import numpy as np
 import os
 
 #globals
-a = np.array([1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 2.0, 3.0, 4.0],dtype=np.float64)
+a = np.array([1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 2.0, 3.0, 4.0], dtype=np.float64)
 df = pd.DataFrame(a,columns=['data'])
 filename = 'unittestFile.p'
 
@@ -15,8 +15,8 @@ class TestMitCluster(TestCase):
         result = obj.calcDistances(df,3)
         B,H = np.shape(result)
         expLen = len(df)-2
-        self.assertEqual(B,expLen)
-        self.assertEqual(H,expLen)
+        self.assertEqual(B, expLen)
+        self.assertEqual(H, expLen)
 
     def test_SaveDistance(self):
         # prepare
