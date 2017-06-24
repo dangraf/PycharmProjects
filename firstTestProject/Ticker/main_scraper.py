@@ -24,7 +24,8 @@ _thread.start_new_thread( t_bitcoin_unlimited.run,() )
 t_bitcoin_fees = tb.ticker_base('./bitcoin_fees.p',60.0,'https://bitcoinfees.21.co/api/v1/fees/recommended')
 _thread.start_new_thread( t_bitcoin_fees.run,() )
 
-t_exchange_rates = tb.ticker_base('./exchange_rates.p',60.0,'https://apiv2.bitcoinaverage.com/constants/exchangerates/global')
+# list all currencies: https://poloniex.com/public?command=returnCurrencies
+t_exchange_rates = tb.ticker_base('./poloniex_ticker',60.0,'https://poloniex.com/public?command=returnTicker')
 _thread.start_new_thread( t_exchange_rates.run ,())
 
 t_crypto_coin_market = tb.ticker_base('./crypto_coin_market.p',60.0,'https://api.coinmarketcap.com/v1/ticker/?limit=100')
