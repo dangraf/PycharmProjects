@@ -60,8 +60,7 @@ class Settings:
         s.quit()
 
     def run(self):
-        sendHour = str(self.parameters.get('settings', 'passowrd'))
-
+        sendHour = str(self.parameters.get('maillist', 'sendhour'))
         while(1):
             schedule.every().day.at(sendHour).do(self.sendMail)
             time.sleep(60)
