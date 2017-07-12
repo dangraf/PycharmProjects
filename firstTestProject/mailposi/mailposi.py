@@ -56,7 +56,7 @@ class Settings:
             msg['Subject'] = 'Daily task'
             msg['From'] = me
             msg['To'] = receiver
-            #s.sendmail(me, receiver, msg.as_string())
+            s.sendmail(me, receiver, msg.as_string())
         s.quit()
 
     def run(self):
