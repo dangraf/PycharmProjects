@@ -39,6 +39,7 @@ class Settings:
 
 
     def sendMail(self):
+        print("sending mail")
         self.loadSettings()
         me = self.parameters.get('settings','mailaddress')
         s = smtplib.SMTP(self.parameters.get('settings', 'popserver'),\
@@ -61,12 +62,15 @@ class Settings:
 
     def run(self):
         sendHour = str(self.parameters.get('maillist', 'sendhour'))
+        print(sendHour)
+        schedule.every().day.at(sendHour).do(self.sendMail)
         while(1):
-            schedule.every().day.at(sendHour).do(self.sendMail)
-            time.sleep(60)
+            schedule.run_pending()
+            time.sleep(5)
 
 
-
+def myTask():
+    print("doing it!")
 if __name__ == "__main__":
     set = Settings()
     set.run()
