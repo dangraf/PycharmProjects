@@ -41,9 +41,9 @@ def _slice_df_by_date(df_in, date_start, date_end):
     return df_out
 
 
-@accepts(pd.DataFrame, any, bool)
+@accepts(pd.DataFrame, object, bool)
 @returns(pd.DataFrame)
-def normalize_dataframe(dataframe,scaler, inverce=False ):
+def normalize_dataframe(dataframe, scaler, inverce=False):
     """
     Normalizes all columns in a dataframe using scikit-learn scaler
     :param dataframe: dataframe containing data
@@ -52,14 +52,13 @@ def normalize_dataframe(dataframe,scaler, inverce=False ):
     :return: dataframe
     """
     columns = dataframe.columns
-    if inverce:
-        for col in columns:
-            dataframe[col] = scaler.inverse_transform(dataframe[col].values.reshape(-1, 1))
-    else:
-        for col in columns:
-            dataframe[col] = scaler.fit_transform(dataframe[col].values.reshape(-1, 1))
+    data = dataframe.as_matrix()
 
-    return dataframe
+    if inverce:
+        data = scaler.inverse_transform(data)
+    else:
+        data = scaler.fit_transform(data)
+    return pd.DataFrame(data, columns=columns)
 
 @returns(pd.DataFrame)
 @accepts(str, str, (int, str), (int, str))
