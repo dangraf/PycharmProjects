@@ -13,5 +13,6 @@ setup(
         "pandas >= 0.18.1",
         "numpy >= 1.12.1",
         "pyvalid >= 0.9",
+        "hypothesis>=3.18.5"
     ],
 )

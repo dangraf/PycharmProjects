@@ -41,6 +41,26 @@ def _slice_df_by_date(df_in, date_start, date_end):
     return df_out
 
 
+@accepts(pd.DataFrame, any, bool)
+@returns(pd.DataFrame)
+def normalize_dataframe(dataframe,scaler, inverce=False ):
+    """
+    Normalizes all columns in a dataframe using scikit-learn scaler
+    :param dataframe: dataframe containing data
+    :param scaler:  scikit-learn scaler
+    :param inverce: if True, it converts back to original values
+    :return: dataframe
+    """
+    columns = dataframe.columns
+    if inverce:
+        for col in columns:
+            dataframe[col] = scaler.inverse_transform(dataframe[col].values.reshape(-1, 1))
+    else:
+        for col in columns:
+            dataframe[col] = scaler.fit_transform(dataframe[col].values.reshape(-1, 1))
+
+    return dataframe
+
 @returns(pd.DataFrame)
 @accepts(str, str, (int, str), (int, str))
 def get_dataframe_from_historicaldata(filename, groupinterval='1min', time_start=None, time_end=None):
@@ -62,6 +82,35 @@ def get_dataframe_from_historicaldata(filename, groupinterval='1min', time_start
     df['volume'].fillna(0, inplace=True)
 
     return df
+
+@returns(np.ndarray)
+@accepts((pd.DataFrame, np.ndarray), int)
+def split_sequential_df_to_matrix(dataframe, sequence_len):
+    """
+    Takes a dataframe containing sequential data and splits it up into smaller pieces.
+    eg dataframe [1,2 3 4,5 6] sequence_len = 3
+    return will be
+    [1,2,3
+    2,3,4
+    3,4,5
+    4,5,6]
+
+    :param dataframe: pandas dataframe or numpy matrix to split
+    :param sequence_len: lenght of sequence
+    :return:
+    """
+    l = len(dataframe)
+    if type(dataframe) == pd.DataFrame:
+        data = dataframe.as_matrix()
+    else:
+        data = dataframe
+
+    result = []
+    for i in range(l-sequence_len+1):
+        result.append(data[i:i+sequence_len])
+    ret = np.array(result)
+    return ret
+
 
 
 

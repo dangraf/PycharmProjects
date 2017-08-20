@@ -1,5 +1,5 @@
 import unittest
-import importCSV
+import PrepareData
 import numpy as np
 import ConfigParser
 import pandas as pd
@@ -21,7 +21,7 @@ class TestSequenceFunctions(unittest.TestCase):
         myfilter = np.array([0, 0.5,0.5])
         myfilter = myfilter[::-1]
 
-        retFr = importCSV.getFutureFiltered( dataFrame,myfilter )
+        retFr = PrepareData.getFutureFiltered(dataFrame, myfilter)
 
 
         #check that length of dataframe is unchenged
@@ -50,7 +50,7 @@ class TestSequenceFunctions(unittest.TestCase):
         dataframe['volume'] = fakevolume
         dataframe['date'] = fakeDate
 
-        df = importCSV.getHistoryFiltered( dataframe,myfilter )
+        df = PrepareData.getHistoryFiltered(dataframe, myfilter)
 
         # Checking length and content of returned vectors
         self.assertEqual( len(df['HistoryFilter']), 15)
@@ -63,7 +63,7 @@ class TestSequenceFunctions(unittest.TestCase):
         self.assertEqual( df['HistoryFilter'][14], 13.5/15-1.0) ## (14+13)/2 = 13.5 = > 15/13.5- 1.0 = 1.5
 
     def testFutureFilter(self):
-        f = importCSV.getFutureFilter([2,4,6,8])
+        f = PrepareData.getFutureFilter([2, 4, 6, 8])
         self.assertEqual( len(f), 9)
         self.assertEqual( f[-2], 0.25)
         self.assertEqual( f[-4], 0.25)
@@ -80,8 +80,8 @@ class TestSequenceFunctions(unittest.TestCase):
         dataFrame = pd.DataFrame({'price':price}, index = timestamp)
         dataFrame['volume'] = pd.Series(volume,index = timestamp)
 
-        myfilter = importCSV.getFutureFilter([1,3,5])
-        newFrame = importCSV.getFutureFiltered( dataFrame,myfilter )
+        myfilter = PrepareData.getFutureFilter([1, 3, 5])
+        newFrame = PrepareData.getFutureFiltered(dataFrame, myfilter)
 
 
         length = len(newFrame['price'])-len(myfilter)
@@ -98,8 +98,8 @@ class TestSequenceFunctions(unittest.TestCase):
         timestamp = range(1,20)
         dataFrame = pd.DataFrame({'price':price,'volume':volume}, index = timestamp)
 
-        myfilter = importCSV.getHistoryFilter([5,4,2])
-        retFrame = importCSV.getHistoryFiltered( dataFrame,myfilter )
+        myfilter = PrepareData.getHistoryFilter([5, 4, 2])
+        retFrame = PrepareData.getHistoryFiltered(dataFrame, myfilter)
 
         i = 0;
         for i in range(5,len(retFrame)):
@@ -117,7 +117,7 @@ class TestSequenceFunctions(unittest.TestCase):
 
         filename = config.get('Section1', 'orderdepthfilename')
         directory = config.get('Section1', 'bitcoinHistDataFolder')
-        a = importCSV.getOrderDepthRatio(directory+filename, 60)
+        a = PrepareData.getOrderDepthRatio(directory + filename, 60)
         size = np.shape(a)
         self.assertEqual(size[1], 1)
         self.assertEqual(size[0], 613)
