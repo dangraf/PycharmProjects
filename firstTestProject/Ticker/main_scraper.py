@@ -1,38 +1,64 @@
-import ticker_base as tb
+# -*- coding: utf-8 -*-
+"""
+Base class for fetching data from a home-page and save it to a mongo-db
+
+_author__ =  "Daniel Grafström"
+__license__ = "GPL"
+__status__ = "Experimental"
+"""
+
+import tickerbase as tb
 import _thread
-from threading import Thread
-#OK ./marketcap.p',5.0,'https://api.coinmarketcap.com/v1/ticker/?limit=30
+import logging
+
+
+def create_logger():
+    logger = logging.getLogger('main_scraper')
+    logger.setLevel(logging.INFO)
+    # create file handler which logs even debug messages
+    fh = logging.FileHandler('main_scraper.log')
+    fh.setLevel(logging.DEBUG)
+    # create console handler with a higher log level
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.DEBUG)
+    # create formatter and add it to the handlers
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    fh.setFormatter(formatter)
+    ch.setFormatter(formatter)
+    # add the handlers to the logger
+    logger.addHandler(fh)
+    logger.addHandler(ch)
+
+    logger.info("Main_scraper started")
+    logger.debug("Main_scraper started")
+    logger.error("Main_scraper started")
+
+# OK ./marketcap.p',5.0,'https://api.coinmarketcap.com/v1/ticker/?limit=30
 # https://apiv2.bitcoinaverage.com/
 # http://bitcoincharts.com/about/markets-api/
 # https://blockchain.info/api
-# https://bitcoinfees.21.co/api
-#https://api.blockchain.info/charts/bitcoin-unlimited-share?timespan=5weeks&rollingAverage=8hours&format=json
 
-#volume comparesio
-#median-confirmation-time
-#transaction-fees
-#cost-per-transaction-percent
-#n-unique-addresses
-#n-transactions-excluding-popular
-#n-transactions-excluding-chains-longer-than-100
-t_bitcoin_segwith = tb.ticker_base('./bitcoin_segwith.p',60*60,'https://api.blockchain.info/charts/bip-9-segwit?timespan=1days&format=json')
-_thread.start_new_thread( t_bitcoin_segwith.run,() )
+# https://api.blockchain.info/charts/bitcoin-unlimited-share?timespan=5weeks&rollingAverage=8hours&format=json
 
-t_bitcoin_unlimited = tb.ticker_base('./bitcoin_unlimited.p',60*60,'https://api.blockchain.info/charts/bitcoin-unlimited-share?timespan=1days&format=json')
-_thread.start_new_thread( t_bitcoin_unlimited.run,() )
+# volume comparesio
+# median-confirmation-time
+# transaction-fees
+# cost-per-transaction-percent
+# n-unique-addresses
+# n-transactions-excluding-popular
+# n-transactions-excluding-chains-longer-than-100
+create_logger()
 
-t_bitcoin_fees = tb.ticker_base('./bitcoin_fees.p',60.0,'https://bitcoinfees.21.co/api/v1/fees/recommended')
-_thread.start_new_thread( t_bitcoin_fees.run,() )
+t_bitcoin_fees = tb.TickerBase(60.0, 'https://bitcoinfees.21.co/api/v1/fees/recommended',
+                               'localhost', 'bitcoin_fees')
+_thread.start_new_thread(t_bitcoin_fees.run, ())
 
 # list all currencies: https://poloniex.com/public?command=returnCurrencies
-t_exchange_rates = tb.ticker_base('./poloniex_ticker',60.0,'https://poloniex.com/public?command=returnTicker')
-_thread.start_new_thread( t_exchange_rates.run ,())
+t_exchange_rates = tb.TickerBase( 60.0, 'https://poloniex.com/public?command=returnTicker', 'localhost', 'poloniex')
+_thread.start_new_thread(t_exchange_rates.run, ())
 
-t_crypto_coin_market = tb.ticker_base('./crypto_coin_market.p',60.0,'https://api.coinmarketcap.com/v1/ticker/?limit=100')
-_thread.start_new_thread( t_crypto_coin_market.run, () )
-
+t_crypto_coin_market = tb.TickerBase(60.0, 'https://api.coinmarketcap.com/v1/ticker/?limit=100',
+                                     'localhost', 'crypto_coin_market')
+_thread.start_new_thread(t_crypto_coin_market.run, ())
 while 1:
-   pass
-#thread = Thread(target = t_market.run )
-#thread.start()
-
+    pass
