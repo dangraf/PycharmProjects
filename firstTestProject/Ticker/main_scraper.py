@@ -33,11 +33,10 @@ def create_logger():
     logger.debug("Main_scraper started")
     logger.error("Main_scraper started")
 
-# OK ./marketcap.p',5.0,'https://api.coinmarketcap.com/v1/ticker/?limit=30
+
 # https://apiv2.bitcoinaverage.com/
 # http://bitcoincharts.com/about/markets-api/
 # https://blockchain.info/api
-
 # https://api.blockchain.info/charts/bitcoin-unlimited-share?timespan=5weeks&rollingAverage=8hours&format=json
 
 # volume comparesio
@@ -48,6 +47,8 @@ def create_logger():
 # n-transactions-excluding-popular
 # n-transactions-excluding-chains-longer-than-100
 create_logger()
+t_bitcoin_markets = tb.TickerBase(60.0*15,'https://poloniex.com/public?command=returnTicker','localhost','markets')
+_thread.start_new_thread(t_bitcoin_markets.run, ())
 
 t_bitcoin_fees = tb.TickerBase(60.0, 'https://bitcoinfees.21.co/api/v1/fees/recommended',
                                'localhost', 'bitcoin_fees')
