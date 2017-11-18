@@ -9,6 +9,7 @@ import pyvalid
 from sklearn import preprocessing
 from pandas.util.testing import assert_almost_equal
 
+
 class TestSequenceFunctions(unittest.TestCase):
     @given(hypnumpy.array_shapes(min_dims=1, max_dims=3, min_side=5, max_side=10))
     def test_Split_check_Dimentions(self, arrayShape):
