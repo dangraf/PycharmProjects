@@ -45,23 +45,9 @@ class ParseBitcoinNews:
 
         for link in soup.findAll("div", {"class": "td-big-grid-meta"}):
             data = {'text': link.find_all('a')[0].text, 'time': datetime.now()}
-
-            if self._is_new_data(data):
-
-                self.connect_db()
+            self.connect_db()
+            if self.db_col.find_one({'text': data['text']}) is not None:
                 self.db_col.insert_one(data)
-                self.db_client.close()
                 self.logger.info('adding data: {0}, {1}'.format(data['time'], data['text']))
-                self.histData.append(data)
-        self._delete_old_data()
+            self.db_client.close()
 
-    def _is_new_data(self, data):
-        for saved in self.histData:
-            if saved['text'] == data['text']:
-                return False
-        return True
-
-    def _delete_old_data(self):
-        for saved in self.histData:
-            if (datetime.now() - saved['time']) > timedelta(hours=24):
-                self.histData.remove(saved)

@@ -59,4 +59,10 @@ class TestParseBitcoinNews(TestCase):
         a.check_for_news()
         self.assertEqual(len(a.histData), 5)
 
+    def test__is_new_data2(self):
+        newdata = {'text': 'new_text', 'time': datetime.now()}
+        a = ParseBitcoinNews()
+        ret = a._is_new_data2(newdata)
+        self.assertEqual(ret, True)
+
 
