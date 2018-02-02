@@ -47,7 +47,7 @@ def create_logger():
 # n-transactions-excluding-popular
 # n-transactions-excluding-chains-longer-than-100
 create_logger()
-t_bitcoin_markets = tb.TickerBase(60.0*15,'https://poloniex.com/public?command=returnTicker','localhost','markets')
+t_bitcoin_markets = tb.TickerBase(60.0 * 15, 'https://poloniex.com/public?command=returnTicker', 'localhost', 'markets')
 _thread.start_new_thread(t_bitcoin_markets.run, ())
 
 t_bitcoin_fees = tb.TickerBase(60.0, 'https://bitcoinfees.21.co/api/v1/fees/recommended',
@@ -55,11 +55,15 @@ t_bitcoin_fees = tb.TickerBase(60.0, 'https://bitcoinfees.21.co/api/v1/fees/reco
 _thread.start_new_thread(t_bitcoin_fees.run, ())
 
 # list all currencies: https://poloniex.com/public?command=returnCurrencies
-t_exchange_rates = tb.TickerBase( 60.0, 'https://poloniex.com/public?command=returnTicker', 'localhost', 'poloniex')
+t_exchange_rates = tb.TickerBase(60.0, 'https://poloniex.com/public?command=returnTicker', 'localhost', 'poloniex')
 _thread.start_new_thread(t_exchange_rates.run, ())
 
 t_crypto_coin_market = tb.TickerBase(60.0, 'https://api.coinmarketcap.com/v1/ticker/?limit=100',
                                      'localhost', 'crypto_coin_market')
 _thread.start_new_thread(t_crypto_coin_market.run, ())
+
+t_coin_marketcap_global = tb.TickerBase(60.0, 'https://api.coinmarketcap.com/v1/global/', 'localhost',
+                                        'crypto_coin_global')
+_thread.start_new_thread(t_coin_marketcap_global.run, ())
 while 1:
     pass
