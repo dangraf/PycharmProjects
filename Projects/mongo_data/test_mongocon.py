@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from Projects.mongo_data.mongo_init import init_mongodb
 from Projects.mongo_data.settings_data import get_safe_settingslist, get_settingslist
-from Projects.mongo_data.ticker_data import save_tickerdata
+from Projects.mongo_data.ticker_data import save_tickerdata, get_TickerSettings
 
 
 init_mongodb()
@@ -37,3 +37,9 @@ class TestMongoOperations(TestCase):
     def test_save_ticker_data(self):
         mydata = {'namn': 5, 'id': 5.7, 'apa': 'Tjohej'}
         save_tickerdata(mydata, 'testcol')
+        pass
+
+    def test_get_ticker_settings(self):
+
+        allsettings = get_TickerSettings()
+        self.assertEqual(len(allsettings),4)
