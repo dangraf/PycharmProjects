@@ -10,12 +10,18 @@ urls = ['https://techcrunch.com/',
         'http://fortune.com/',
         'https://www.forbes.com/',
         'https://cointelegraph.com/',
-        'https://www.marketwatch.com/',
         'https://www.coindesk.com/',
         'https://www.theguardian.com/'
         'https://www.ft.com/',
-        'http://www.bbc.com/'
-        'http://time.com/']
+        'http://www.bbc.com/',
+        'http://time.com/',
+        'https://www.pri.org',
+        'http://www.businessinsider.com',
+        'https://arstechnica.com',
+        'https://www.investopedia.com',
+        'https://www.washingtonpost.com',
+        'https://www.wired.com']
+
 
 keywords = ['bitcoin', 'ripple', 'ethereum', 'litecoin',
             'dash', ' eos ', ' neo ', 'stellar', ' nem ', 'Tether']

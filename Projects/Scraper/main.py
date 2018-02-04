@@ -8,6 +8,12 @@ __status__ = "Experimental"
 """
 
 import logging
+import schedule # https://pypi.python.org/pypi/schedule
+from Projects.mongo_data.mongo_init import init_mongodb
+from Projects.Scraper.cryptonews_scraper import get_news_data
+from Projects.Scraper.crypto_ticker import get_ticker_data
+from time import sleep
+
 
 def create_logger():
     logger = logging.getLogger('main_scraper')
@@ -29,6 +35,12 @@ def create_logger():
     logger.info("Main_scraper started")
     logger.debug("Main_scraper started")
     logger.error("Main_scraper started")
-# todo, init database connections.
-# todo, call schedule and start tasks
 
+
+init_mongodb()
+create_logger()
+schedule.every(15).minutes.do(get_news_data)
+schedule.every().minute.do(get_ticker_data)
+while 1:
+    schedule.run_pending()
+    sleep(5)
