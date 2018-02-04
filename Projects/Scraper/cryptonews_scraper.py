@@ -1,5 +1,5 @@
-from mongo_data.settings_data import SettingsList, get_safe_settingslist
-from mongo_data.crypto_news_data import CryptoNews
+from Projects.mongo_data.settings_data import SettingsList, get_safe_settingslist
+from Projects.mongo_data.crypto_news_data import CryptoNews
 import newspaper
 import logging
 
