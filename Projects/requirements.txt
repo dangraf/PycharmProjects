@@ -1,0 +1,8 @@
+schedule
+mongoengine
+requests
+configparser
+newspaper3k
+pandas
+numpy
+matplotlib
