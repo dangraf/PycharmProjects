@@ -7,11 +7,11 @@ import newspaper
 import logging
 import requests
 
-df_prev = None
+#df_prev = None
 
 
 def get_coinmarketcap():
-    global df_prev
+    #global df_prev
 
     getter = GetUrlData('https://api.coinmarketcap.com/v1/ticker/?limit=100')
     getter.do_work()
@@ -19,9 +19,10 @@ def get_coinmarketcap():
     try:
         data = getter.get_result()
         df = pd.DataFrame(data)
-        dfs = get_new_unique_data(old_df=df_prev, new_df=df)
-        mongo.save_tickerdata(data=dfs.to_dict(orient='records'), collection_name="coinmarketcap_top100")
-        df_prev = df
+
+        #dfs = get_new_unique_data(old_df=df_prev, new_df=df)
+        mongo.save_tickerdata(data=df.to_dict(orient='records'), collection_name="coinmarketcap_top100")
+        #df_prev = df
     except BaseException as e:
         if df is None:
             # this is a get-data error
