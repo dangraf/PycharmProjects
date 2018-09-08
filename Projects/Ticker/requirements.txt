@@ -1,0 +1,12 @@
+pandas
+numpy
+bitcoinaverage
+json
+newspaper3k
+urllib
+logging
+mongoengine
+datetime
+unittest
+time
+thread
