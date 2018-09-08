@@ -39,7 +39,9 @@ class Ticker_Scheduler():
         while (self.running):
             for i in range(len(self.callback_list)):
                 try:
+                    print(self.callback_list[i])
+                    self.logger.info(f' Running: {self.callback_list[i]}')
                     self.callback_list[i]()
-                    self._wait_until_next_update()
                 except BaseException as e:
                     self.logger.error(f"{e}")
+            self._wait_until_next_update()

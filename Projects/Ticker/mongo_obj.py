@@ -15,7 +15,7 @@ class CryptoNews(Document):
     timestamp = DateTimeField(default=datetime.now)
     tags = ListField(StringField(), required=True)
     title = StringField(max_length=200, required=True, unique=True)
-    description = StringField(max_length=200, required=True)
+    description = StringField(max_length=400, required=True)
     text = StringField(required=True)
     url = StringField(max_length=200, required=True)
     time_posted = DateTimeField(required=False)

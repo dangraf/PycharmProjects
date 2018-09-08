@@ -1,6 +1,7 @@
 from Ticker.data_getters import *
 from Ticker.ticker_scheduler import Ticker_Scheduler
 from time import sleep
+from Ticker.mongo_obj import init_mongodb
 
 
 task_5min = Ticker_Scheduler(update_period_s=60 * 5, callback_list=[get_bitcoin_fees,
@@ -12,7 +13,9 @@ task_5min = Ticker_Scheduler(update_period_s=60 * 5, callback_list=[get_bitcoin_
 task_15min = Ticker_Scheduler(update_period_s=60 * 15, callback_list=[get_news_data,
                                                                       get_bitcoincharts_data],
                               taskname='15min tasks')
-task_5min.start_thread()
-task_15min.start_thread()
-while(1):
-    sleep(20)
+if __name__ == "__main__":
+    init_mongodb()
+    task_5min.start_thread()
+    task_15min.start_thread()
+    while 1:
+        sleep(20)

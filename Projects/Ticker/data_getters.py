@@ -2,7 +2,7 @@ from Ticker.datahelpers import GetUrlData, get_new_unique_data
 import Ticker.mongo_obj as mongo
 import pandas as pd
 from Projects.mongo_data.settings_data import SettingsList, get_safe_settingslist
-from Projects.mongo_data.crypto_news_data import CryptoNews
+
 import newspaper
 import logging
 import requests
@@ -134,9 +134,9 @@ def get_news_data():
                 keys = [key for key in keylist.list if key in article.title.lower()]
                 if len(keys) > 0:
                     # check if article already exists
-                    obj = CryptoNews.objects(title=article.title).first()
+                    obj = mongo.CryptoNews.objects(title=article.title).first()
                     if obj is None:
-                        news = CryptoNews()
+                        news = mongo.CryptoNews()
                         news.title = article.title
                         news.description = article.meta_description
                         news.text = article.text
