@@ -4,7 +4,7 @@ from time import sleep
 from Ticker.mongo_obj import init_mongodb
 
 
-task_5min = Ticker_Scheduler(update_period_s=60 * 2, callback_list=[get_bitcoin_fees,
+task_5min = Ticker_Scheduler(update_period_s=60 * 5, callback_list=[get_bitcoin_fees,
                                                                     get_coinmarketcap,
                                                                     get_fear_greed_index,
                                                                     get_global_cap],
