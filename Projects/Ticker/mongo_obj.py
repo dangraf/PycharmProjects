@@ -27,6 +27,15 @@ class CryptoNews(Document):
     }
 
 
+class SettingsList(Document):
+    name = StringField(unique=True, required=True)
+    list = ListField(StringField())
+    meta = {
+        'db_alias': 'settings',
+        'collection': 'lists'
+    }
+
+
 def init_mongodb():
     mongoengine.register_connection(alias='settings', name='apps_settings', host='userver', port=27017)
     mongoengine.register_connection(alias='NewsDb', name='ticker3_db', host='userver', port=27017)
@@ -41,3 +50,13 @@ def save_tickerdata(*, data, collection_name: str):
         obj.save()
     except BaseException as e:
         print(e)
+
+
+def get_settingslist(listname: str) -> SettingsList:
+    """
+    Finds a list in the settings collection
+    :param listname: name of the list to be found
+    :return: returns a SettingsList object
+    """
+    setlist = SettingsList.objects(name=listname).first()
+    return setlist

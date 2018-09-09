@@ -1,7 +1,7 @@
-from Ticker.data_getters import *
-from Ticker.ticker_scheduler import Ticker_Scheduler
+from data_getters import *
+from ticker_scheduler import Ticker_Scheduler
 from time import sleep
-from Ticker.mongo_obj import init_mongodb
+from mongo_obj import init_mongodb
 
 
 task_5min = Ticker_Scheduler(update_period_s=60 * 5, callback_list=[get_bitcoin_fees,

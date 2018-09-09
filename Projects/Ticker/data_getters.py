@@ -1,7 +1,7 @@
-from Ticker.datahelpers import GetUrlData, get_new_unique_data
-import Ticker.mongo_obj as mongo
+from datahelpers import GetUrlData
+import mongo_obj as mongo
 import pandas as pd
-from Projects.mongo_data.settings_data import SettingsList, get_safe_settingslist
+# from  Projects.mongo_data.settings_data import SettingsList, get_safe_settingslist
 import krakenex
 
 import newspaper
@@ -17,7 +17,7 @@ def get_coinmarketcap():
 
     getter = GetUrlData('https://api.coinmarketcap.com/v1/ticker/?limit=100')
     getter.do_work()
-    df = None
+
     try:
         data = getter.get_result()
         df = pd.DataFrame(data)
@@ -26,12 +26,7 @@ def get_coinmarketcap():
         mongo.save_tickerdata(data=df.to_dict(orient='records'), collection_name="coinmarketcap_top100")
         # df_prev = df
     except BaseException as e:
-        if df is None:
-            # this is a get-data error
-            raise BaseException(e + 'When getting coinmarketcap data')
-        else:
-            # this is either a parsing error or save to database error.
-            raise type(e)(e.message + 'When parsing and saving data')
+        raise BaseException(f'{e}: When getting coinmarketcap data')
 
 
 def get_fear_greed_index():
@@ -45,7 +40,7 @@ def get_fear_greed_index():
         greed_index = int(substr[:end].strip())
         mongo.save_tickerdata(data=greed_index, collection_name='fear_and_greed_index')
     except BaseException as e:
-        raise BaseException(e + "when getting fear_greed index")
+        raise BaseException(f"{e} when getting fear_greed index")
 
 
 def get_kraken_orderdepth():
@@ -72,7 +67,7 @@ def get_kraken_orderdepth():
                 mongo.save_tickerdata(data=data, collection_name='kraken_orderdepth')
                 break
             except BaseException as e:
-                raise BaseException(e + "when getting fear_greed index")
+                raise BaseException(f"{e} when getting fear_greed index")
 
 
 def get_global_cap():
@@ -82,7 +77,7 @@ def get_global_cap():
         data = getter.get_result()
         mongo.save_tickerdata(data=data, collection_name='global_market')
     except BaseException as e:
-        raise BaseException(e + 'When getting global_market data')
+        raise BaseException(f"{e}: When getting global_market data")
 
 
 df_bitcoincharts = None
@@ -96,11 +91,11 @@ def get_bitcoincharts_data():
     try:
         data = getter.get_result()
         df = pd.DataFrame(data)
-        df2 = get_new_unique_data(old_df=df_bitcoincharts, new_df=df)
-        mongo.save_tickerdata(data=df2.to_dict(orient='records'), collection_name='bitcoincharts_global')
+        # df2 = get_new_unique_data(old_df=df_bitcoincharts, new_df=df)
+        mongo.save_tickerdata(data=df.to_dict(orient='records'), collection_name='bitcoincharts_global')
         df_bitcoincharts = df
     except BaseException as e:
-        raise BaseException(e + " when getting bitcoincharts data")
+        raise BaseException(f"{e}:  when getting bitcoincharts data")
 
 
 # def get_bitcoinaverage_ticker_data():
@@ -121,7 +116,7 @@ def get_bitcoin_fees():
         data = getter.get_result()
         mongo.save_tickerdata(data=data, collection_name='bitcoin_fees')
     except BaseException as e:
-        raise BaseException(e + 'When getting bitcoin fees')
+        raise BaseException(f"{e}: When getting bitcoin fees")
 
 
 urls = ['https://techcrunch.com/',
@@ -151,10 +146,10 @@ keywords = ['bitcoin', 'ripple', 'ethereum', 'litecoin',
 def get_news_data():
     # Get list of settings
     try:
-        urllist: SettingsList = get_safe_settingslist('CryptoNewsUrls', urls)
-        keylist: SettingsList = get_safe_settingslist('CrytoNewsKeywords', keywords)
+        urllist: mongo.SettingsList = mongo.get_settingslist('CryptoNewsUrls')
+        keylist: mongo.SettingsList = mongo.get_settingslist('CrytoNewsKeywords')
     except BaseException as e:
-        raise BaseException(e + "When getting settings lists for bitcoin news")
+        raise BaseException(f"{e}: When getting settings lists for bitcoin news")
 
     logger_name = 'main_scraper.' + "bitcoin_news"
     logger = logging.getLogger(logger_name)
