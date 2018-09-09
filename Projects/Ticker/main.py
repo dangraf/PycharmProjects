@@ -7,7 +7,8 @@ from Ticker.mongo_obj import init_mongodb
 task_5min = Ticker_Scheduler(update_period_s=60 * 5, callback_list=[get_bitcoin_fees,
                                                                     get_coinmarketcap,
                                                                     get_fear_greed_index,
-                                                                    get_global_cap],
+                                                                    get_global_cap,
+                                                                    get_kraken_orderdepth],
                              taskname='5min tasks')
 
 task_15min = Ticker_Scheduler(update_period_s=60 * 15, callback_list=[get_news_data,
