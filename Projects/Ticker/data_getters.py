@@ -3,7 +3,6 @@ import mongo_obj as mongo
 import pandas as pd
 # from  Projects.mongo_data.settings_data import SettingsList, get_safe_settingslist
 import krakenex
-
 import newspaper
 import logging
 import requests
@@ -117,29 +116,6 @@ def get_bitcoin_fees():
         mongo.save_tickerdata(data=data, collection_name='bitcoin_fees')
     except BaseException as e:
         raise BaseException(f"{e}: When getting bitcoin fees")
-
-
-urls = ['https://techcrunch.com/',
-        'https://www.nbcnews.com/',
-        'https://www.cnbc.com/',
-        'https://www.marketwatch.com/',
-        'http://fortune.com/',
-        'https://www.forbes.com/',
-        'https://cointelegraph.com/',
-        'https://www.coindesk.com/',
-        'https://www.theguardian.com/'
-        'https://www.ft.com/',
-        'http://www.bbc.com/',
-        'http://time.com/',
-        'https://www.pri.org',
-        'http://www.businessinsider.com',
-        'https://arstechnica.com',
-        'https://www.investopedia.com',
-        'https://www.washingtonpost.com',
-        'https://www.wired.com']
-
-keywords = ['bitcoin', 'ripple', 'ethereum', 'litecoin',
-            'dash', ' eos ', ' neo ', 'stellar', ' nem ', 'Tether']
 
 
 # get every 30 minutes? 15 seems too fast sometimes
