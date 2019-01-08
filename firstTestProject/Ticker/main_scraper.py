@@ -7,7 +7,7 @@ __license__ = "GPL"
 __status__ = "Experimental"
 """
 
-import tickerbase as tb
+import firstTestProject.Ticker.tickerbase as tb
 import _thread
 import logging
 
@@ -65,5 +65,7 @@ _thread.start_new_thread(t_crypto_coin_market.run, ())
 t_coin_marketcap_global = tb.TickerBase(60.0, 'https://api.coinmarketcap.com/v1/global/', 'localhost',
                                         'crypto_coin_global')
 _thread.start_new_thread(t_coin_marketcap_global.run, ())
-while 1:
-    pass
+
+
+
+
