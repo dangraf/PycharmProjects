@@ -22,7 +22,6 @@ urls = ['https://techcrunch.com/',
         'https://www.washingtonpost.com',
         'https://www.wired.com']
 
-
 keywords = ['bitcoin', 'ripple', 'ethereum', 'litecoin',
             'dash', ' eos ', ' neo ', 'stellar', ' nem ', 'Tether']
 
