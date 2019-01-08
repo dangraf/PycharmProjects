@@ -50,7 +50,7 @@ def get_news_data():
                         news = CryptoNews()
                         news.title = article.title
                         news.description = article.meta_description
-                        news.text = article.text[0:200]
+                        news.text = article.text
                         news.tags = keys
                         news.url = article.url
                         news.save()
